@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "account", schema = "transactions")
 public class Account {
@@ -24,6 +26,7 @@ public class Account {
     @JoinTable(name = "account_issuer",
             joinColumns = { @JoinColumn(name = "account_id") },
             inverseJoinColumns = { @JoinColumn(name = "issuer_id") })
+    @JsonIgnore
     private Set<Issuer> issuers = new HashSet<>();
 
     public Account(final String username, final String password) {

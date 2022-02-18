@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "issuer", schema = "transactions")
@@ -29,6 +31,7 @@ public class Issuer {
     private boolean isActive;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "issuers")
+    @JsonIgnore
     private Set<Account> accounts = new HashSet<>();
 
     public Issuer(final String name) {
