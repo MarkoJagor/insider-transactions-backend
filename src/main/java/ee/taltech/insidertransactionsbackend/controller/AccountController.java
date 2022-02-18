@@ -25,7 +25,7 @@ import ee.taltech.insidertransactionsbackend.security.jwt.JwtUtils;
 import ee.taltech.insidertransactionsbackend.service.AccountDetailsImpl;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/account")
 @CrossOrigin("http://localhost:3000/")
 public class AccountController {
 
@@ -46,7 +46,7 @@ public class AccountController {
         this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping("/account/signup")
+    @PostMapping("/signup")
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody AccountSignupDto accountSignup) {
         if (Boolean.TRUE.equals(this.accountRepository.existsByUsername(accountSignup.getUsername()))) {
             return ResponseEntity.
@@ -61,7 +61,7 @@ public class AccountController {
         return ResponseEntity.ok(new MessageResponse(String.format("Account with email %s registered successfully", account.getUsername())));
     }
 
-    @PostMapping("/account/signin")
+    @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AccountLoginDto accountLogin) {
 
         Authentication authentication = this.authenticationManager.authenticate(

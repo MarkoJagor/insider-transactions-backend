@@ -16,7 +16,7 @@ import ee.taltech.insidertransactionsbackend.model.Transaction;
 import ee.taltech.insidertransactionsbackend.repository.TransactionRepository;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/transactions")
 @CrossOrigin("http://localhost:3000/")
 public class TransactionController {
 
@@ -27,14 +27,14 @@ public class TransactionController {
         this.transactionRepository = transactionRepository;
     }
 
-    @GetMapping("/transactions")
+    @GetMapping
     public List<Transaction> getAllTransactions() {
         return this.transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "publishedDate"));
     }
 
-    @GetMapping("/transactions/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
-       Transaction transaction = this.transactionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %s does not exist", id)));
-       return ResponseEntity.ok(transaction);
+        Transaction transaction = this.transactionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %s does not exist", id)));
+        return ResponseEntity.ok(transaction);
     }
 }
