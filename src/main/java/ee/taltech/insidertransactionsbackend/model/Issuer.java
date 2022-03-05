@@ -34,8 +34,9 @@ public class Issuer {
     @JsonIgnore
     private Set<Account> accounts = new HashSet<>();
 
-    public Issuer(final String name) {
+    public Issuer(final String name, final boolean isActive) {
         this.name = name;
+        this.isActive = isActive;
     }
 
     public Issuer() {

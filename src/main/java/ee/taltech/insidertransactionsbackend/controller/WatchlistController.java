@@ -35,8 +35,9 @@ public class WatchlistController {
     }
 
     @GetMapping("/issuers")
-    public List<Issuer> getActiveIssuers() {
-        return this.issuerRepository.findByIsActiveTrue();
+    public ResponseEntity<List<Issuer>> getActiveIssuers() {
+        List<Issuer> activeIssuers = this.issuerRepository.findByIsActiveTrue();
+        return ResponseEntity.ok(activeIssuers);
     }
 
     @GetMapping("/account/{id}")
