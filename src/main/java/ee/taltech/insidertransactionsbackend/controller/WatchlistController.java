@@ -1,7 +1,6 @@
 package ee.taltech.insidertransactionsbackend.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ee.taltech.insidertransactionsbackend.dto.AccountWatchlist;
 import ee.taltech.insidertransactionsbackend.exception.ResourceNotFoundException;
 import ee.taltech.insidertransactionsbackend.model.Account;
 import ee.taltech.insidertransactionsbackend.model.Issuer;
@@ -41,16 +41,21 @@ public class WatchlistController {
     }
 
     @GetMapping("/account/{id}")
-    public ResponseEntity<Set<Issuer>> getAccountIssuers(@PathVariable Long id) {
+    public ResponseEntity<AccountWatchlist> getAccountWatchlist(@PathVariable Long id) {
         Account account = this.accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %s does not exist", id)));
 
-        return ResponseEntity.ok(account.getIssuers());
+        AccountWatchlist accountWatchlist = new AccountWatchlist();
+        accountWatchlist.setIssuers(account.getIssuers());
+        accountWatchlist.setAlphaReturns(account.isAlphaReturns());
+
+        return ResponseEntity.ok(accountWatchlist);
     }
 
     @PutMapping("/account/{id}")
-    public void updateAccountIssuers(@RequestBody Set<Issuer> issuerSet, @PathVariable Long id) {
+    public void updateAccountWatchlist(@RequestBody AccountWatchlist accountWatchlist, @PathVariable Long id) {
         Account account = this.accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %s does not exist", id)));
-        account.setIssuers(issuerSet);
+        account.setIssuers(accountWatchlist.getIssuers());
+        account.setAlphaReturns(accountWatchlist.isAlphaReturns());
         this.accountRepository.save(account);
     }
 }
