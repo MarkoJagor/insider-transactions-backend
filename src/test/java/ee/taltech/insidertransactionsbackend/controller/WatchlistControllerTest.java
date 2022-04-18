@@ -73,6 +73,7 @@ class WatchlistControllerTest {
 
         this.account = new Account("Username", "Password");
         this.account.setAccountId(1L);
+        this.account.setAlphaReturns(true);
         this.account.setIssuers(new HashSet<>(Arrays.asList(this.issuer1, this.issuer2)));
     }
 
@@ -90,22 +91,24 @@ class WatchlistControllerTest {
 
     @Test
     @WithMockUser
-    void getAccountIssuers() throws Exception {
+    void getAccountWatchlist() throws Exception {
         Mockito.when(this.accountRepository.findById(this.account.getAccountId())).thenReturn(Optional.of(this.account));
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/watchlist/account/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$[0].name", anyOf(is("Test 1"), is("Test 2"))))
-                .andExpect(jsonPath("$[1].name", anyOf(is("Test 1"), is("Test 2"))));
+                .andExpect(jsonPath("$.issuers[0].name", anyOf(is("Test 1"), is("Test 2"))))
+                .andExpect(jsonPath("$.issuers[1].name", anyOf(is("Test 1"), is("Test 2"))))
+                .andExpect(jsonPath("$.alphaReturns", is(true)));
     }
 
     @Test
     @WithMockUser
-    void updateAccountIssuers() throws Exception {
+    void updateAccountWatchlist() throws Exception {
         Account updatedAccount = this.account;
         updatedAccount.setIssuers(new HashSet<>(Collections.singletonList(new Issuer("Test 3", true))));
+        updatedAccount.setAlphaReturns(false);
 
         Mockito.when(this.accountRepository.findById(this.account.getAccountId())).thenReturn(Optional.of(this.account));
         Mockito.when(this.accountRepository.save(updatedAccount)).thenReturn(updatedAccount);
@@ -113,7 +116,7 @@ class WatchlistControllerTest {
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/api/v1/watchlist/account/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(updatedAccount.getIssuers()));
+                .content(this.objectMapper.writeValueAsString(updatedAccount));
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk());
