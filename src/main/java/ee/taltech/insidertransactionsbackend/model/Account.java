@@ -22,6 +22,9 @@ public class Account {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "alpha_returns")
+    private boolean alphaReturns;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "account_issuer",
             joinColumns = { @JoinColumn(name = "account_id") },
@@ -68,5 +71,13 @@ public class Account {
 
     public void setIssuers(final Set<Issuer> issuers) {
         this.issuers = issuers;
+    }
+
+    public boolean isAlphaReturns() {
+        return this.alphaReturns;
+    }
+
+    public void setAlphaReturns(final boolean alphaReturns) {
+        this.alphaReturns = alphaReturns;
     }
 }
