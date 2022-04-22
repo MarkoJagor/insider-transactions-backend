@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,6 @@ import ee.taltech.insidertransactionsbackend.service.AccountDetailsImpl;
 
 @RestController
 @RequestMapping("/api/v1/account")
-@CrossOrigin("http://localhost:3000/")
 public class AccountController {
 
     private final AccountRepository accountRepository;
