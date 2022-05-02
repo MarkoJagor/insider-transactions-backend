@@ -4,7 +4,7 @@ import java.util.Set;
 
 import ee.taltech.insidertransactionsbackend.model.Issuer;
 
-public class AccountWatchlist {
+public class AccountWatchlistDto {
 
     private Set<Issuer> issuers;
 

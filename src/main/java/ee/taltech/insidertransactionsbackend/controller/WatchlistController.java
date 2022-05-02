@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ee.taltech.insidertransactionsbackend.dto.AccountWatchlist;
+import ee.taltech.insidertransactionsbackend.dto.AccountWatchlistDto;
 import ee.taltech.insidertransactionsbackend.exception.ResourceNotFoundException;
 import ee.taltech.insidertransactionsbackend.model.Account;
 import ee.taltech.insidertransactionsbackend.model.Issuer;
@@ -39,10 +39,10 @@ public class WatchlistController {
     }
 
     @GetMapping("/account/{id}")
-    public ResponseEntity<AccountWatchlist> getAccountWatchlist(@PathVariable Long id) {
+    public ResponseEntity<AccountWatchlistDto> getAccountWatchlist(@PathVariable Long id) {
         Account account = this.accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %s does not exist", id)));
 
-        AccountWatchlist accountWatchlist = new AccountWatchlist();
+        AccountWatchlistDto accountWatchlist = new AccountWatchlistDto();
         accountWatchlist.setIssuers(account.getIssuers());
         accountWatchlist.setAlphaReturns(account.isAlphaReturns());
 
@@ -50,10 +50,10 @@ public class WatchlistController {
     }
 
     @PutMapping("/account/{id}")
-    public void updateAccountWatchlist(@RequestBody AccountWatchlist accountWatchlist, @PathVariable Long id) {
+    public void updateAccountWatchlist(@RequestBody AccountWatchlistDto accountWatchlistDto, @PathVariable Long id) {
         Account account = this.accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %s does not exist", id)));
-        account.setIssuers(accountWatchlist.getIssuers());
-        account.setAlphaReturns(accountWatchlist.isAlphaReturns());
+        account.setIssuers(accountWatchlistDto.getIssuers());
+        account.setAlphaReturns(accountWatchlistDto.isAlphaReturns());
         this.accountRepository.save(account);
     }
 }
